@@ -1,0 +1,19 @@
+{
+  "name": "html-js-invoice-template",
+  "description": "1. Automatically add rows to add new products/services\r 2. Autocalculate total\r 3. Auto remove/delete rows\r 4. Auto calculate price * amount",
+  "version": "1.0.0",
+  "main": "app.js",
+  "scripts": {
+    "cypress:open":"cypress open",
+    "cypress:run": "cypress run"
+  },
+  "keywords": [
+    "e2e",
+    "testing"
+  ],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "cypress": "^13.7.2"
+  }
+}
