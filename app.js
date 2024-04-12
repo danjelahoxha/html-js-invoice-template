@@ -49,7 +49,8 @@ overallSum = () => {
 //Delete row from the table
 tBody.addEventListener('click', (e) => {
   let el = e.target
-  const deleteROW = e.target.attributes.action.value
+
+  const deleteROW = e.target?.attributes?.action?.value
   if (deleteROW == 'delete') {
     delRow(el)
     overallSum()
