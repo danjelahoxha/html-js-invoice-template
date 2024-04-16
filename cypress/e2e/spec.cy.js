@@ -1,4 +1,4 @@
-describe.skip('Identify invoice elements', () => {
+describe('Identify invoice elements', () => {
   beforeEach(() => {
     cy.visit('http://127.0.0.1:5500/index.html')
   });
@@ -7,6 +7,7 @@ describe.skip('Identify invoice elements', () => {
     cy.get('.date').should('exist')
     cy.get('.invoice-number').should('exist')
   });
+
   it(" has row:product name,quantity,price,total,action,plus button", () => {
     cy.get('#row-1 > :nth-child(1)').should('exist')
     cy.get('.product').should('exist')
@@ -33,6 +34,7 @@ describe('Invoice functionality', () => {
     cy.get('#price').type('20')
     cy.get('#amount').should("have.value", "100");
   });
+
   it(" add and fill a new row", () => {
     cy.get('#add-row').click()
     cy.get('#row-2').should('exist')
