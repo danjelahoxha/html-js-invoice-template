@@ -25,10 +25,11 @@ document.getElementById('add-row').addEventListener('click', (e) => {
 getInput = () => {
   var rows = document.querySelectorAll('tr.single-row')
   rows.forEach((currentRow) => {
-    var unit = currentRow.querySelector('#unit').value
-    var price = currentRow.querySelector('#price').value
+    var unit = currentRow.querySelector('#unit')?.value || 0
+    var price = currentRow.querySelector('#price')?.value || 0
 
     amount = unit * price
+    if( currentRow.querySelector('#amount'))
     currentRow.querySelector('#amount').value = amount
     overallSum()
   })
