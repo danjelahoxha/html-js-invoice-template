@@ -10,7 +10,7 @@ addNewRow = () => {
   row.innerHTML = `<td><input type="text" placeholder="Product name" class="product"  ></td>
                     <td><input type="number" placeholder="0" name="unit" class="unit"   onkeyup="getInput()"></td>
                     <td><input type="number" placeholder="0" name="price" class="price"  onkeyup="getInput()"></td>
-                    <td><input type="number" placeholder="0" name="amount" class="amount"   disabled></td>
+                    <td><input type="number" placeholder="0" name="amount" class="amount" disabled></td>
                     <td style="text-align: right;"><span class="material-icons" action="delete">delete_outline</span></td>`
 
   tBody.insertBefore(row, tBody.lastElementChild.previousSibling)
@@ -25,12 +25,26 @@ document.getElementById('add-row').addEventListener('click', (e) => {
 getInput = () => {
   var rows = document.querySelectorAll('tr.single-row')
   rows.forEach((currentRow) => {
+<<<<<<< Updated upstream
     var unit = currentRow.querySelector('#unit')?.value || 0
     var price = currentRow.querySelector('#price')?.value || 0
 
     amount = unit * price
     if( currentRow.querySelector('#amount'))
     currentRow.querySelector('#amount').value = amount
+=======
+    var unit = currentRow.querySelector('.unit').value
+    var price = currentRow.querySelector('.price').value
+    console.log(
+      'element',
+      unit,
+      price,
+      unit * price,
+      currentRow.querySelector('.amount'),
+    )
+    amount = unit * price
+    currentRow.querySelector('.amount').value = amount
+>>>>>>> Stashed changes
     overallSum()
   })
 }
