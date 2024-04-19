@@ -25,26 +25,11 @@ document.getElementById('add-row').addEventListener('click', (e) => {
 getInput = () => {
   var rows = document.querySelectorAll('tr.single-row')
   rows.forEach((currentRow) => {
-<<<<<<< Updated upstream
-    var unit = currentRow.querySelector('#unit')?.value || 0
-    var price = currentRow.querySelector('#price')?.value || 0
-
-    amount = unit * price
-    if( currentRow.querySelector('#amount'))
-    currentRow.querySelector('#amount').value = amount
-=======
     var unit = currentRow.querySelector('.unit').value
     var price = currentRow.querySelector('.price').value
-    console.log(
-      'element',
-      unit,
-      price,
-      unit * price,
-      currentRow.querySelector('.amount'),
-    )
+    
     amount = unit * price
     currentRow.querySelector('.amount').value = amount
->>>>>>> Stashed changes
     overallSum()
   })
 }
