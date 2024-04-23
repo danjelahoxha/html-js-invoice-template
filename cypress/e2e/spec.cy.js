@@ -221,5 +221,3 @@ const products = [
 
   });
 });
-
-// to do:add a test where u add in invoice 10 rows. using command fillrow
