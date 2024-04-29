@@ -33,10 +33,46 @@ describe.skip('Identify invoice elements', () => {
 describe('Invoice functionality', () => {
   beforeEach(() => {
     cy.visit('http://127.0.0.1:5500/index.html')
-
   });
 
 const products = [
+
+  {
+    name:'ivi',
+    unit:4.5,
+    price:20,
+   },
+
+   {
+    name:'sprite',
+    unit:4.5,
+    price:20,
+   },
+
+   {
+    name:'fanta',
+    unit:4.5,
+    price:20,
+   },
+
+   {
+    name:'cola',
+    unit:4.5,
+    price:20,
+   },
+
+   {
+    name:'pencil',
+    unit:4.5,
+    price:20,
+   },
+
+   {
+    name:'spageti',
+    unit:4.5,
+    price:20,
+   },
+
   {
     name:'paper',
     unit:4.5,
@@ -53,34 +89,40 @@ const products = [
     price:10
    },
    {
+    name:'rice',
+    unit:5,
+    price:10
+   },
+   {
     name:'book',
     unit:98,
     price:75
    }
 ] 
-   const total4rows = calculateTotal(products)
+   const total4rows = calculateTotal(products.slice(0, 4));
    const total3rows = calculateTotal(products.slice(0, 3));
    const total2rows = calculateTotal(products.slice(0, 2));
+   const total10rows = calculateTotal(products.slice(0, 10));
+   
 
   it(" fill default row", () => {
-    cy.get('.product').type(products[0].name)
-    cy.get('#unit').type(products[0].unit)
-    cy.get('#price').type(products[0].price)
+    cy.addRow(products[0].name,products[0].unit,products[0].price)
     cy.get('#amount').should("have.value", products[0].unit*products[0].price);
   });
 
   it(" add and fill a new row", () => {
-    cy.get('.product').type(products[0].name)
-    cy.get('#unit').type(products[0].unit)
-    cy.get('#price').type(products[0].price)
-    cy.get('#amount').should("have.value", products[0].unit*products[0].price);
+
+    cy.fillRow(1,'bread',20,30)
+   
+    cy.get('#amount').should("have.value", 600);
+
     cy.get('#add-row').click()
+
     cy.get('#row-2').should('exist')
-    cy.get('#row-2 .product').type(products[1].name)
-    cy.get('#row-2 .unit').type(products[1].unit)
-    cy.get('#row-2 .price').type(products[1].price)
-    cy.get('#row-2 .amount').should("have.value", products[1].unit*products[1].price);
-    cy.get('#total').should("have.value", total2rows);
+
+    cy.fillRow(2,'water',20,20)
+    cy.get('#row-2 .amount').should("have.value", 400);
+    cy.get('#total').should("have.value", 1000);
   });
 
   it(" remove row ", () => {
@@ -88,56 +130,94 @@ const products = [
   });
 
   it(" invoice with tree rows ", () => {
-    cy.get('.product').type(products[0].name)
-    cy.get('#unit').type(products[0].unit)
-    cy.get('#price').type(products[0].price)
+   
+    cy.addRow(products[0].name,products[0].unit,products[0].price)
     cy.get('#amount').should("have.value", products[0].unit*products[0].price);
 
     cy.get('#add-row').click()
     cy.get('#row-2').should('exist')
-    cy.get('#row-2 .product').type(products[1].name)
-    cy.get('#row-2 .unit').type(products[1].unit)
-    cy.get('#row-2 .price').type(products[1].price)
+    cy.fillRow(2,products[1].name,products[1].unit,products[1].price)
     cy.get('#row-2 .amount').should("have.value", products[1].unit*products[1].price);
 
     cy.get('#add-row').click()
     cy.get('#row-3').should('exist')
-    cy.get('#row-3 .product').type(products[2].name)
-    cy.get('#row-3 .unit').type(products[2].unit)
-    cy.get('#row-3 .price').type(products[2].price)
+    cy.fillRow(3,products[2].name,products[2].unit,products[2].price)
     cy.get('#row-3 .amount').should("have.value", products[2].unit*products[2].price);
     cy.get('#total').should("have.value", total3rows);
   });
 
-  it(" invoice with fourrows ", () => {
-    cy.get('.product').type(products[0].name)
-    cy.get('#unit').type(products[0].unit)
-    cy.get('#price').type(products[0].price)
+  it(" invoice with four rows ", () => {
+    cy.fillRow(1,products[0].name,products[0].unit,products[0].price)
     cy.get('#amount').should("have.value", products[0].unit*products[0].price);
 
     cy.get('#add-row').click()
     cy.get('#row-2').should('exist')
-    cy.get('#row-2 .product').type(products[1].name)
-    cy.get('#row-2 .unit').type(products[1].unit)
-    cy.get('#row-2 .price').type(products[1].price)
+    cy.fillRow(2,products[1].name,products[1].unit,products[1].price)
     cy.get('#row-2 .amount').should("have.value", products[1].unit*products[1].price);
 
     cy.get('#add-row').click()
     cy.get('#row-3').should('exist')
-    cy.get('#row-3 .product').type(products[2].name)
-    cy.get('#row-3 .unit').type(products[2].unit)
-    cy.get('#row-3 .price').type(products[2].price)
+    cy.fillRow(3,products[2].name,products[2].unit,products[2].price)
+    cy.get('#row-3 .amount').should("have.value", products[2].unit*products[2].price);
+
+    cy.get('#add-row').click()
+    cy.get('#row-4').should('exist')
+    cy.fillRow(4,products[3].name,products[3].unit,products[3].price)
+    cy.get('#row-4 .amount').should("have.value", products[3].unit*products[3].price);
+    cy.get('#total').should("have.value", total4rows);
+
+  });
+
+  it(" invoice with ten rows ", () => {
+    cy.fillRow(1,products[0].name,products[0].unit,products[0].price)
+    cy.get('#amount').should("have.value", products[0].unit*products[0].price);
+
+    cy.get('#add-row').click()
+    cy.get('#row-2').should('exist')
+    cy.fillRow(2,products[1].name,products[1].unit,products[1].price)
+    cy.get('#row-2 .amount').should("have.value", products[1].unit*products[1].price);
+
+    cy.get('#add-row').click()
+    cy.get('#row-3').should('exist')
+    cy.fillRow(3,products[2].name,products[2].unit,products[2].price)
     cy.get('#row-3 .amount').should("have.value", products[2].unit*products[2].price);
     cy.get('#total').should("have.value", total3rows);
 
     cy.get('#add-row').click()
     cy.get('#row-4').should('exist')
-    cy.get('#row-4 .product').type(products[3].name)
-    cy.get('#row-4 .unit').type(products[3].unit)
-    cy.get('#row-4 .price').type(products[3].price)
+    cy.fillRow(4,products[3].name,products[3].unit,products[3].price)
     cy.get('#row-4 .amount').should("have.value", products[3].unit*products[3].price);
-    cy.get('#total').should("have.value", total4rows);
+
+    cy.get('#add-row').click()
+    cy.get('#row-5').should('exist')
+    cy.fillRow(5,products[4].name,products[4].unit,products[4].price)
+    cy.get('#row-5 .amount').should("have.value", products[4].unit*products[4].price);
+
+    cy.get('#add-row').click()
+    cy.get('#row-6').should('exist')
+    cy.fillRow(6,products[5].name,products[5].unit,products[5].price)
+    cy.get('#row-6 .amount').should("have.value", products[5].unit*products[5].price);
+
+    cy.get('#add-row').click()
+    cy.get('#row-7').should('exist')
+    cy.fillRow(7,products[6].name,products[6].unit,products[6].price)
+    cy.get('#row-7 .amount').should("have.value", products[6].unit*products[6].price);
+
+    cy.get('#add-row').click()
+    cy.get('#row-8').should('exist')
+    cy.fillRow(8,products[7].name,products[7].unit,products[7].price)
+    cy.get('#row-8 .amount').should("have.value", products[7].unit*products[7].price);
+
+    cy.get('#add-row').click()
+    cy.get('#row-9').should('exist')
+    cy.fillRow(9,products[8].name,products[8].unit,products[8].price)
+    cy.get('#row-9 .amount').should("have.value", products[8].unit*products[8].price);
+   
+    cy.get('#add-row').click()
+    cy.get('#row-10').should('exist')
+    cy.fillRow(10,products[9].name,products[9].unit,products[9].price)
+    cy.get('#row-10 .amount').should("have.value", products[9].unit*products[9].price);
+    cy.get('#total').should("have.value", total10rows);
 
   });
 });
-
