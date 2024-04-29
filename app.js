@@ -27,7 +27,7 @@ getInput = () => {
   rows.forEach((currentRow) => {
     var unit = currentRow.querySelector('.unit').value
     var price = currentRow.querySelector('.price').value
-    
+
     amount = unit * price
     currentRow.querySelector('.amount').value = amount
     overallSum()
@@ -61,3 +61,73 @@ tBody.addEventListener('click', (e) => {
 delRow = (el) => {
   el.parentNode.parentNode.parentNode.removeChild(el.parentNode.parentNode)
 }
+
+document.getElementById('saveInvoice').addEventListener('click', (e) => {
+  const saveButton = document.getElementById('saveInvoice')
+  if (saveButton) {
+    saveButton.addEventListener('click', saveInvoice)
+  } else {
+    console.error('Save button not found')
+  }
+})
+
+function getCurrentYearSuffix() {
+  const year = new Date().getFullYear()
+  return year.toString().slice(-2)
+}
+function getNextInvoiceNumber() {
+  const yearSuffix = getCurrentYearSuffix()
+  const key = 'invoiceNumber-' + yearSuffix
+  let lastNumber = parseInt(localStorage.getItem(key)) || 0
+  lastNumber++ // Increment the number for new invoice
+  // localStorage.setItem(key, lastNumber.toString()) // Save the updated number back to localStorage
+
+  // Format the number as four digits (e.g., '0001')
+  const formattedNumber = lastNumber.toString().padStart(4, '0')
+  return `${yearSuffix}-${formattedNumber}`
+}
+
+function saveInvoice() {
+  const invoiceNumber = document.querySelector('.invoice-number').textContent
+  const date = document.querySelector('.date').textContent
+  const products = []
+
+  const yearSuffix = getCurrentYearSuffix()
+  const key = 'invoiceNumber-' + yearSuffix
+  let lastNumber = parseInt(localStorage.getItem(key)) || 0
+  lastNumber++
+  localStorage.setItem(key, lastNumber.toString())
+
+  const rows = document.querySelectorAll('#table-body .single-row')
+  rows.forEach((row) => {
+    const product = row.querySelector('.product').value
+    const unit = row.querySelector('.unit').value
+    const price = row.querySelector('.price').value
+    const amount = row.querySelector('.amount').value
+
+    if (product && unit && price) {
+      // Only save rows with complete data
+      products.push({ product, unit, price, amount })
+    }
+  })
+
+  const total = document.getElementById('total').value
+
+  const invoice = {
+    number: invoiceNumber,
+    date: date,
+    currency: 'EURO',
+    total: total,
+  }
+
+  // Save to local storage
+  let invoices = JSON.parse(localStorage.getItem('invoices')) || []
+  invoices.push(invoice)
+  localStorage.setItem('invoices', JSON.stringify(invoices))
+  window.location.href = 'index.html'
+}
+
+document.addEventListener('DOMContentLoaded', function () {
+  const invoiceNumber = getNextInvoiceNumber()
+  document.getElementById('invoice-number').textContent = `${invoiceNumber}`
+})
